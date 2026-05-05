@@ -1,6 +1,9 @@
 import jwt, {} from 'jsonwebtoken';
 const KEY = process.env.JWT_SECRET_KEY;
 export const jwtFilter = async (req, res, next) => {
+    if (req.originalUrl.startsWith("/auth/")) {
+        return next();
+    }
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.status(401).json({ message: "Unauthorized" });

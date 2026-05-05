@@ -16,6 +16,9 @@ declare global {
 }
 
 export const jwtFilter = async (req: Request, res: Response, next: NextFunction) => {
+    if (req.originalUrl.startsWith("/auth/")) {
+        return next();
+    }
     const authHeader = req.headers.authorization;
     if(!authHeader) {
         return res.status(401).json({message: "Unauthorized"});

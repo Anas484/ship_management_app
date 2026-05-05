@@ -9,5 +9,5 @@ declare global {
         }
     }
 }
-export declare const jwtFilter: (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const jwtFilter: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
 //# sourceMappingURL=jwtFilter.d.ts.map
