@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CREW
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now()) @map("created_at")
+
+  assignedTasks  Task[]  @relation("AssignedTo")
+  createdTasks   Task[]  @relation("AssignedBy")
+  attendace      Attendance[]
+
+  @@map("users")
+}
+
+model Ship {
+  id          Int     @id @default(autoincrement())
+  shipName    String  @map("ship_name")
+  shipSource  String  @map("ship_source")
+  shipDest    String  @map("ship_destination")
+
+  tasks Task[]
+  drills Drill[]
+
+  @@map("ships")
+}
+
+model Task {
+  id             Int        @id @default(autoincrement())
+  taskName       String     @map("task_name")
+  taskDescription String    @map("task_description")
+  status         TaskStatus
+  commentByCrew  String?    @map("comment_by_crew")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  assignedShip   Ship    @relation(fields: [assignedShipId], references: [id])
+  assignedShipId Int     @map("assigned_ship")
+
+  assignedBy     User    @relation("AssignedBy", fields: [assignedById], references: [id])
+  assignedById   Int     @map("assigned_by")
+
+  assignedTo     User    @relation("AssignedTo", fields: [assignedToId], references: [id])
+  assignedToId   Int     @map("assigned_to")
+
+  @@map("tasks")
+}
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+model Drill {
+  id        Int      @id @default(autoincrement())
+  drillName String   @map("drill_name")
+  drillDate DateTime @map("drill_date")
+  location  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  ship   Ship @relation(fields: [shipId], references: [id])
+  shipId Int  @map("ship_id")
+
+  attendance Attendance[]
+
+  @@map("drills")
+}
+
+model Attendance {
+  id       Int              @id @default(autoincrement())
+  status   AttendanceStatus
+  markedOn DateTime         @default(now()) @map("marked_on")
+
+  drill   Drill @relation(fields: [drillId], references: [id])
+  drillId Int   @map("drill_id")
+
+  crew   User @relation(fields: [crewId], references: [id])
+  crewId Int  @map("crew_id")
+
+  @@unique([drillId, crewId]) // prevent duplicate attendance per drill
+  @@map("attendance")
+}
