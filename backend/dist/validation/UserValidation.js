@@ -21,4 +21,11 @@ export const userLoginResponse = z.object({
     id: z.number(),
     token: z.string()
 });
+export const updateUserRequest = z.object({
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    email: z.string().email().optional(),
+    password: z.string().optional(),
+    role: z.enum(['ADMIN', 'CREW']).optional()
+});
 //# sourceMappingURL=UserValidation.js.map
