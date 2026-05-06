@@ -24,6 +24,11 @@ enum TaskStatus {
   COMPLETED
 }
 
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   firstName String   @map("first_name")
@@ -41,15 +46,31 @@ model User {
 }
 
 model Ship {
-  id          Int     @id @default(autoincrement())
-  shipName    String  @map("ship_name")
-  shipSource  String  @map("ship_source")
-  shipDest    String  @map("ship_destination")
+  id            Int     @id @default(autoincrement())
+  shipName      String  @map("ship_name")
+  shipModel     String  @map("ship_model")
+  shipCapacity  Int  @map("ship_capacity")
 
   tasks Task[]
   drills Drill[]
+  shipDetails ShipDetails[]
 
   @@map("ships")
+}
+
+model ShipDetails {
+    id               Int     @id @default(autoincrement())
+
+    ship             Ship    @relation(fields: [shipId], references:[id])
+    shipId           Int     @map("ship_id")
+
+    shipSource       String  @map("ship_source")
+    shipDestination  String  @map("ship_destination")
+
+    departureDate    DateTime
+    arrivalDate      DateTime
+
+    @@map("ship_details")
 }
 
 model Task {
@@ -70,16 +91,15 @@ model Task {
   assignedTo     User    @relation("AssignedTo", fields: [assignedToId], references: [id])
   assignedToId   Int     @map("assigned_to")
 
+  dueDate        DateTime
+
   @@map("tasks")
-}
-enum AttendanceStatus {
-  PRESENT
-  ABSENT
 }
 
 model Drill {
   id        Int      @id @default(autoincrement())
   drillName String   @map("drill_name")
+  drillType String
   drillDate DateTime @map("drill_date")
   location  String
   createdAt DateTime @default(now()) @map("created_at")

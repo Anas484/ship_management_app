@@ -1,0 +1,1 @@
+{"version":3,"file":"roleAcccessMiddleware.d.ts","sourceRoot":"","sources":["../../src/middlewares/roleAcccessMiddleware.ts"],"names":[],"mappings":"AACA,OAAO,KAAI,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAG9D,eAAO,MAAM,SAAS,SACV,KAAK,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,YAAY,mDAM1D,CAAC;AAEF,eAAO,MAAM,QAAQ,SACT,KAAK,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,YAAY,mDAM1D,CAAC"}

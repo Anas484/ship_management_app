@@ -42,6 +42,11 @@ const signup = async (req: Request, res: Response) => {
         if(!parsed.success) {
             return res.status(400).json({message: parsed.error.message});
         }
+        const isUserExist = await prisma.user.findUnique({where: {email: parsed.data.email}});
+        if(isUserExist) {
+            logger.info("User already exist");
+            return res.status(400).json({message: "User already exist"});
+        }
         let {role} = parsed.data;
         const {firstName, lastName, email, password} = parsed.data;
         if (role === "ADMIN") {

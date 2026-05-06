@@ -1,0 +1,1 @@
+{"version":3,"file":"ShipController.d.ts","sourceRoot":"","sources":["../../src/controllers/ShipController.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAMjD,QAAA,MAAM,UAAU,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,4DAYpD,CAAA;AAGD,QAAA,MAAM,cAAc,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,gDAUxD,CAAA;AAGD,OAAM,EACF,UAAU,EACV,cAAc,EACjB,CAAA"}
