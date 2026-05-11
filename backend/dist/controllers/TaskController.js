@@ -1,6 +1,17 @@
 import { prisma } from "../utils/PrismaConnection.js";
 import { logger } from "../configs/winstonConfig.js";
 import { taskRequest } from "../validation/TaskValidation.js";
+const getAllTask = async (req, res) => {
+    try {
+        const tasks = await prisma.task.findMany();
+        logger.info("Tasks retrieved successfully");
+        res.status(200).json(tasks);
+    }
+    catch (error) {
+        logger.error("Error retrieving tasks");
+        res.status(500).json({ message: "Error retrieving tasks" });
+    }
+};
 const createTask = async (req, res) => {
     try {
         const parsed = taskRequest.safeParse(req.body);
@@ -30,4 +41,37 @@ const createTask = async (req, res) => {
         }
     }
 };
+const updateTaskStatus = async (req, res) => {
+    try {
+        const status = req.body.status;
+        const taskId = req.params.id;
+        const task = await prisma.task.update({
+            where: { id: Number(taskId) },
+            data: { status: status },
+        });
+        logger.info("Task status updated successfully");
+        res.status(200).json({ message: "Task status updated successfully", data: task });
+    }
+    catch (error) {
+        logger.error("Error updating task status");
+        res.status(500).json({ message: "Error updating task status" });
+    }
+};
+const deleteTask = async (req, res) => {
+    try {
+        const taksId = req.params.id;
+        const task = await prisma.task.delete({
+            where: {
+                id: Number(taksId)
+            }
+        });
+        logger.info("Task deleted successfully");
+        res.status(200).json({ message: "Task deleted successfully" });
+    }
+    catch (error) {
+        logger.error("Error deleting task");
+        res.status(500).json({ message: "Error deleting task" });
+    }
+};
+export { getAllTask, createTask, updateTaskStatus, deleteTask };
 //# sourceMappingURL=TaskController.js.map

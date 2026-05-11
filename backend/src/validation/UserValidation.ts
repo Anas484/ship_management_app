@@ -14,6 +14,7 @@ export const userRequest = z.object({
 
 
 export const userResponse = z.object({
+    id: z.number(),
     firstName: z.string(),
     lastName: z.string(),
     email: z.string().email(),

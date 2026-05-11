@@ -25,7 +25,7 @@ const login = async (req: Request, res: Response) => {
         }
         const token = generateToken({id: user.id, role: user.role});
         logger.info("Login successful");
-        return res.status(200).json({message:"success", token});
+        return res.status(200).cookie('token', token, {httpOnly: true}).json({message: "Login successful", ...userResponse.safeParse(user).data});
         
     } catch (error) {
         console.log(error);
@@ -65,7 +65,16 @@ const signup = async (req: Request, res: Response) => {
 }
 
 
+const logout = (req: Request, res: Response) => {
+    try {
+        res.clearCookie('token');
+    } catch (error) {
+        
+    }
+}
+
 export {
     login,
-    signup
+    signup,
+    logout
 }

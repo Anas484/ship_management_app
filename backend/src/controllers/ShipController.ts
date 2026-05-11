@@ -4,6 +4,16 @@ import { logger } from "../configs/winstonConfig.js";
 import { shipRequest } from "../validation/ShipValidation.js";
 
 
+const getAllShips = async (req: Request, res: Response) => {
+    try {
+        const ships = await prisma.ship.findMany();
+        logger.info("Ships retrieved successfully");
+        res.status(200).json(ships);
+    } catch (error) {
+        logger.error("Error retrieving ships");
+        res.status(500).json({ message: "Error retrieving ships" });
+    }
+}
 const createShip = async (req: Request, res: Response) => {
     try {
         const parsed = shipRequest.safeParse(req.body);
@@ -33,6 +43,7 @@ const deleteShipById = async (req: Request, res: Response) => {
 
 
 export{
+    getAllShips,
     createShip,
     deleteShipById
 }

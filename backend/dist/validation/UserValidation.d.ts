@@ -10,6 +10,7 @@ export declare const userRequest: z.ZodObject<{
     }>;
 }, z.core.$strip>;
 export declare const userResponse: z.ZodObject<{
+    id: z.ZodNumber;
     firstName: z.ZodString;
     lastName: z.ZodString;
     email: z.ZodString;

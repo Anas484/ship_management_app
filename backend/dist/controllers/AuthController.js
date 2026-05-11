@@ -23,7 +23,7 @@ const login = async (req, res) => {
         }
         const token = generateToken({ id: user.id, role: user.role });
         logger.info("Login successful");
-        return res.status(200).json({ message: "success", token });
+        return res.status(200).cookie('token', token, { httpOnly: true }).json({ message: "Login successful", ...userResponse.safeParse(user).data });
     }
     catch (error) {
         console.log(error);
@@ -57,6 +57,13 @@ const signup = async (req, res) => {
     catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal server error" });
+    }
+};
+const logout = (req, res) => {
+    try {
+        res.clearCookie('token');
+    }
+    catch (error) {
     }
 };
 export { login, signup };
